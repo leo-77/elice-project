@@ -1,14 +1,31 @@
-// src/pages/index.tsx
-import { useState } from 'react';
-import styles from '../styles/Home.module.css';
+import React from 'react';
+import styled from 'styled-components';
+
+import GlobalStyle from '../components/GlobalStyle';
+import Layout from "../components/Layout";
+import SearchInput from '../components/SearchInput';
+import SearchFilter from "../components/SearchFilter";
+import CourseList from '../components/CourseList';
+
+const Space = styled.div`
+    display: block;
+    width: 0px;
+    height: 0px;
+    margin: 0px 0px 0.625rem;
+    padding: 0px;
+`;
 
 const Home = () => {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Hello, Next.js!</h1>
-    </div>
+    <>
+      <GlobalStyle />
+      <Layout>
+        <SearchInput />
+        <Space />
+        <SearchFilter />
+        <CourseList />
+      </Layout>
+    </>
   );
 };
 
