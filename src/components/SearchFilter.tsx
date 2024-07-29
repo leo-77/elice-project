@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 const FilterContainer = styled.div`
@@ -40,17 +40,17 @@ const FilterButtons = styled.div`
   background-color: rgb(255, 255, 255);
 `;
 
-const FilterButton = styled.button`
+const FilterButton = styled.button<{ isActive: boolean }>`
   padding: 8px 16px;
   border: 1px solid rgb(201, 202, 204);
   border-radius: 16px;
-  background-color: rgb(248, 249, 250); /* 배경 색상 */
+  background-color: ${({ isActive }) => (isActive ? 'rgb(181, 178, 214)' : 'rgb(248, 249, 250)')}; /* 배경 색상 */
   color: rgb(0, 0, 0); /* Gray1 */
   font-size: 12px;
   cursor: pointer;
 
   &:hover {
-    background-color: rgb(235, 235, 235);
+    background-color: ${({ isActive }) => (isActive ? 'rgb(180, 170, 210)' : 'rgb(240, 240, 250)')};
   }
 `;
 
@@ -111,15 +111,29 @@ const filters = [
   {
     title: "가격",
     options: [
-      { key: "price", value: 29, name: "무료" },
-      { key: "price", value: 30, name: "유료" },
-      { key: "price", value: 31, name: "구독" },
-      { key: "price", value: 32, name: "학점" },
+      { key: "price", value: "무료", name: "무료" },
+      { key: "price", value: "유료", name: "유료" },
+      { key: "price", value: "구독", name: "구독" },
+      { key: "price", value: "학점", name: "학점" },
     ],
   },
 ];
 
 const SearchFilter = () => {
+  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set());
+
+  const handleFilterClick = (value: string) => {
+    setSelectedFilters((prevSelectedFilters) => {
+      const newSelectedFilters = new Set(prevSelectedFilters);
+      if (newSelectedFilters.has(value)) {
+        newSelectedFilters.delete(value);
+      } else {
+        newSelectedFilters.add(value);
+      }
+      return newSelectedFilters;
+    });
+  };
+
   return (
     <FilterContainer>
       {filters.map((filter, index) => (
@@ -130,8 +144,14 @@ const SearchFilter = () => {
             </FilterText>
           </FilterTitle>
           <FilterButtons>
-            {filter.options.map(({ name }, idx) => (
-              <FilterButton key={idx}>{name}</FilterButton>
+            {filter.options.map(({ name, value }, idx) => (
+              <FilterButton
+                key={idx}
+                isActive={selectedFilters.has(value)}
+                onClick={() => handleFilterClick(value)}
+              >
+                {name}
+              </FilterButton>
             ))}
           </FilterButtons>
         </FilterSection>
