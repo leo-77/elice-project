@@ -4,19 +4,56 @@ import styled from 'styled-components';
 interface CourseCardProps {
   title: string;
   short_description: string;
-  level: string;
-  duration: string;
-  enroll_type: number;
+  level: string | null;
+  duration: string | null;
+  price: string;
   is_free: boolean;
-  logo_file_url?: string;
+  image_file_url: string | null;
+  logo_file_url: string | null;
 }
 
-const Card = styled.div`
-  width: 296px;
-  height: 338px;
-  border-radius: 8px;
-  box-sizing: border-box;
+const CardWrapper = styled.div`
+  margin: 12px;
+  width: calc(25% - 24px);
+`
+const CardFrame = styled.div`
+  min-height: 381px;
+  min-width: auto;
+  white-space: normal;
+  overflow: hidden;
+  padding: 0px;
   position: relative;
+  height: 24rem;
+  border: 1px solid rgba(225, 226, 228, 0.75);
+  max-width: 100%;
+`
+
+const CardHeader = styled.div`
+  position: relative;
+  padding: 0px;
+  border-bottom: 1px solid rgb(240, 241, 243);
+  background-color: transparent;
+`
+
+const CardHeaderImageWrapper = styled.div`
+  height: 145px;
+  background-color: rgb(58, 58, 76);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const CardHeaderImage = styled.div<{ imageFileUrl: string | null, logoFileUrl: string | null }>`
+  display: inline-block;
+  width: ${({ imageFileUrl }) => imageFileUrl ? "100%" : "6.5rem"};
+  min-width: ${({ imageFileUrl }) => imageFileUrl ? "100%" : "6.5rem"};
+  height: ${({ imageFileUrl }) => imageFileUrl ? "100%" : "6.5rem"};
+  background-color: rgb(58, 58, 76);
+  background-image: ${({ imageFileUrl, logoFileUrl }) => imageFileUrl ? `url(${imageFileUrl})` : `url(${logoFileUrl})`};
+  background-position: center center;
+  background-size: ${({ imageFileUrl }) => imageFileUrl ? "cover" : "contain"};
+  background-repeat: no-repeat;
 `;
 
 const Body = styled.div`
@@ -56,6 +93,7 @@ const Description = styled.p`
 `;
 
 const IconTextWrapper = styled.div`
+  display: flex;
   align-items: center;
   margin: 8px 0;
 `;
@@ -81,6 +119,14 @@ const Logo = styled.img`
   object-fit: contain;
 `;
 
+const Image = styled.img`
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+`;
+
 const CardButton = styled.button`
   padding: 10px 20px;
   background-color: #0070f3;
@@ -99,34 +145,43 @@ const CourseCard: React.FC<CourseCardProps> = ({
   short_description,
   level,
   duration,
-  enroll_type,
+  price,
   is_free,
-  logo_file_url
+  image_file_url,
+  logo_file_url,
 }) => {
   let label;
-  if (enroll_type === 0) {
-    label = is_free ? '무료' : '유료';
-  } else if (enroll_type === 4) {
+  if (is_free) {
+    label = '무료';
+  } else if (price === '유료') {
+    label = '유료';
+  } else if (price === '구독') {
     label = '구독';
   } else {
     label = '기타';
   }
 
   return (
-    <Card>
-      <Body>
-        <Label>{label}</Label>
-        <Title>{title}</Title>
-        <Description>{short_description}</Description>
-        <IconTextWrapper>
-          <IconText> 난이도 : {level || '미설정'}</IconText>
-          <IconText> 수업 : 온라인</IconText>
-          <IconText> 기간 : {duration || '무제한'}</IconText>
-        </IconTextWrapper>
-        <CardButton>구독</CardButton>
-      </Body>
-      {logo_file_url && <Logo src={logo_file_url} alt="Course Logo" />}
-    </Card>
+    <CardWrapper>
+      <CardFrame>
+        <CardHeader>
+          <CardHeaderImageWrapper>
+            <CardHeaderImage imageFileUrl={image_file_url} logoFileUrl={logo_file_url} />
+          </CardHeaderImageWrapper>
+        </CardHeader>
+
+        <Body>
+          <Label>{label}</Label>
+          <Title>{title}</Title>
+          <Description>{short_description}</Description>
+          <IconTextWrapper>
+            <IconText>난이도 : {level || '미설정'}</IconText>
+            <IconText>기간 : {duration || '무제한'}</IconText>
+          </IconTextWrapper>
+          <CardButton>구독</CardButton>
+        </Body>
+      </CardFrame>
+    </CardWrapper>
   );
 };
 
