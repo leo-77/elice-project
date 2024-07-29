@@ -10,10 +10,6 @@ const TotalCountContainer = styled.div`
 
 const TotalCount = styled.div`
   user-select: auto;
-  font-size: .75rem;
-  color: #222;
-  font-weight: 700;
-  display: inline-block;
 `;
 
 const CardListContainer = styled.div`
@@ -63,14 +59,14 @@ interface Course {
 
 interface CourseListProps {
   courses: Course[];
-  course_count: number;
+  totalCount: number;
 }
 
-const CourseList: React.FC<CourseListProps> = ({ courses, course_count }) => {
+const CourseList: React.FC<CourseListProps> = ({ courses, totalCount }) => {
   return (
     <div>
       <TotalCountContainer>
-        <TotalCount>전체 {course_count}개</TotalCount>
+        <TotalCount>전체 {totalCount}개</TotalCount>
       </TotalCountContainer>
       <Space />
       <CardListContainer>
@@ -87,4 +83,4 @@ const CourseList: React.FC<CourseListProps> = ({ courses, course_count }) => {
   );
 };
 
-export default CourseList;
+export default React.memo(CourseList);

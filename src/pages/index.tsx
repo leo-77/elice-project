@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 import GlobalStyle from '../components/GlobalStyle';
 import Layout from '../components/Layout';
 import SearchInput from '../components/SearchInput';
@@ -28,43 +29,67 @@ interface Course {
 
 const Home = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [courseCount, setCourseCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const fetchCourses = async (query: string = '') => {
+    setLoading(true);
+    try {
+      const filterConditions = {
+        "$and": [
+          { "title": `%${query}%` },
+          {
+            "$or": [
+              { "status": 2 },
+              { "status": 3 },
+              { "status": 4 }
+            ]
+          },
+          {
+            "$or": []
+          },
+          { "is_datetime_enrollable": true }
+        ]
+      };
+
+      const queryParams = new URLSearchParams({
+        filter_conditions: JSON.stringify(filterConditions),
+        sort_by: 'created_datetime.desc',
+        offset: '0',
+        count: '12',
+      }).toString();
+
+      const response = await fetch(`/api/courses?${queryParams}`);
+      const data = await response.json();
+      setCourses(data.courses);
+      setTotalCount(data.course_count);
+    } catch (error) {
+      console.error('Failed to fetch courses', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const query = new URLSearchParams({
-          filter_conditions: '{"$and":[{"title":"%%"},{"$or":[{"status":2},{"status":3},{"status":4}]},{"$or":[]},{"is_datetime_enrollable":true}]}',
-          sort_by: 'created_datetime.desc',
-          offset: '0',
-          count: '12',
-        }).toString();
-
-        const response = await fetch(`/api/courses?${query}`);
-        const data = await response.json();
-        setCourses(data.courses);
-        setCourseCount(data.course_count);
-      } catch (error) {
-        console.error('Failed to fetch courses', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCourses();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  const handleSearch = (query: string) => {
+    fetchCourses(query);
+  };
 
   return (
     <>
       <GlobalStyle />
       <Layout>
-        <SearchInput />
+        <SearchInput onSearch={handleSearch} />
         <Space />
         <SearchFilter />
-        <CourseList courses={courses} course_count={courseCount} />
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <CourseList courses={courses} totalCount={totalCount} />
+        )}
       </Layout>
     </>
   );

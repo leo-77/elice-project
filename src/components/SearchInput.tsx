@@ -36,7 +36,11 @@ const SearchInputBox = styled.input`
   }
 `;
 
-const SearchInput: React.FC = () => {
+interface SearchInputProps {
+  onSearch: (query: string) => void;
+}
+
+const SearchInput: React.FC<SearchInputProps> = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,12 +48,7 @@ const SearchInput: React.FC = () => {
     debouncedSearch(e.target.value);
   };
 
-  const performSearch = (query: string) => {
-    console.log('performSearch query :', query);
-    // 검색 로직 추가할 구각
-  };
-
-  const debouncedSearch = debounce((query: string) => performSearch(query), 300);
+  const debouncedSearch = debounce((query: string) => onSearch(query), 300);
 
   useEffect(() => {
     return () => {
