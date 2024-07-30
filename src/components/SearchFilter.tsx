@@ -58,63 +58,63 @@ const filters = [
   // {
   //   title: "유형",
   //   options: [
-  //     { key: "courseType", value: 1, name: "과목" },
-  //     { key: "courseType", value: 2, name: "챌린지" },
-  //     { key: "courseType", value: 3, name: "테스트" },
+  //     { key: "courseType", value: "1", name: "과목" },
+  //     { key: "courseType", value: "2", name: "챌린지" },
+  //     { key: "courseType", value: "3", name: "테스트" },
   //   ],
   // },
   // {
   //   title: "진행 방식",
   //   options: [
-  //     { key: "format", value: 4, name: "자유 선택형" },
-  //     { key: "format", value: 5, name: "순차 완료형" },
+  //     { key: "format", value: "4", name: "자유 선택형" },
+  //     { key: "format", value: "5", name: "순차 완료형" },
   //   ],
   // },
   // {
   //   title: "분야",
   //   options: [
-  //     { key: "category", value: 6, name: "프로그래밍 기초" },
-  //     { key: "category", value: 7, name: "데이터 분석" },
-  //     { key: "category", value: 8, name: "웹" },
-  //     { key: "category", value: 9, name: "인공지능" },
-  //     { key: "category", value: 10, name: "알고리즘" }
+  //     { key: "category", value: "6", name: "프로그래밍 기초" },
+  //     { key: "category", value: "7", name: "데이터 분석" },
+  //     { key: "category", value: "8", name: "웹" },
+  //     { key: "category", value: "9", name: "인공지능" },
+  //     { key: "category", value: "10", name: "알고리즘" }
   //   ],
   // },
   // {
   //   title: "난이도",
   //   options: [
-  //     { key: "level", value: 11, name: "입문" },
-  //     { key: "level", value: 12, name: "초급" },
-  //     { key: "level", value: 13, name: "중급" },
-  //     { key: "level", value: 14, name: "고급" },
-  //     { key: "level", value: 15, name: "심화" }
+  //     { key: "level", value: "11", name: "입문" },
+  //     { key: "level", value: "12", name: "초급" },
+  //     { key: "level", value: "13", name: "중급" },
+  //     { key: "level", value: "14", name: "고급" },
+  //     { key: "level", value: "15", name: "심화" }
   //   ],
   // },
   // {
   //   title: "언어",
   //   options: [
-  //     { key: "programmingLanguage", value: 16, name: "C" },
-  //     { key: "programmingLanguage", value: 17, name: "C++" },
-  //     { key: "programmingLanguage", value: 18, name: "자바" },
-  //     { key: "programmingLanguage", value: 19, name: "파이썬" },
-  //     { key: "programmingLanguage", value: 20, name: "자바스크립트" },
-  //     { key: "programmingLanguage", value: 21, name: "R" },
-  //     { key: "programmingLanguage", value: 22, name: "HTML/CSS" },
-  //     { key: "programmingLanguage", value: 23, name: "SQL" },
-  //     { key: "programmingLanguage", value: 24, name: "아두이노" },
-  //     { key: "programmingLanguage", value: 25, name: "스크래치" },
-  //     { key: "programmingLanguage", value: 26, name: "코틀린" },
-  //     { key: "programmingLanguage", value: 27, name: "스위프트" },
-  //     { key: "programmingLanguage", value: 28, name: "엔트리" },
+  //     { key: "programmingLanguage", value: "16", name: "C" },
+  //     { key: "programmingLanguage", value: "17", name: "C++" },
+  //     { key: "programmingLanguage", value: "18", name: "자바" },
+  //     { key: "programmingLanguage", value: "19", name: "파이썬" },
+  //     { key: "programmingLanguage", value: "20", name: "자바스크립트" },
+  //     { key: "programmingLanguage", value: "21", name: "R" },
+  //     { key: "programmingLanguage", value: "22", name: "HTML/CSS" },
+  //     { key: "programmingLanguage", value: "23", name: "SQL" },
+  //     { key: "programmingLanguage", value: "24", name: "아두이노" },
+  //     { key: "programmingLanguage", value: "25", name: "스크래치" },
+  //     { key: "programmingLanguage", value: "26", name: "코틀린" },
+  //     { key: "programmingLanguage", value: "27", name: "스위프트" },
+  //     { key: "programmingLanguage", value: "28", name: "엔트리" },
   //   ],
   // },
   {
     title: "가격",
     options: [
-      { key: "price", value: "무료", name: "무료" },
-      { key: "price", value: "유료", name: "유료" },
-      { key: "price", value: "구독", name: "구독" },
-      { key: "price", value: "학점", name: "학점" },
+      { key: "price", value: "29", name: "무료" },
+      { key: "price", value: "30", name: "유료" },
+      { key: "price", value: "31", name: "구독" },
+      { key: "price", value: "32", name: "학점" },
     ],
   },
 ];
@@ -136,8 +136,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ onFilterChange }) => {
       }
 
       const priceConditions = Array.from(newSelectedFilters).map((filter) => {
-        if (filter === '무료') return { "enroll_type": 0, "is_free": true };
-        if (filter === '유료') return { "enroll_type": 0, "is_free": false };
+        if (filter === '29') return { "enroll_type": 0, "is_free": true };
+        if (filter === '30') return { "enroll_type": 0, "is_free": false };
         return {};
       });
 

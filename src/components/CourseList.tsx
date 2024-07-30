@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import CourseCard from './CourseCard';
 
 const TotalCountContainer = styled.div`
@@ -55,6 +56,7 @@ interface Course {
   is_free: boolean;
   image_file_url: string | null;
   logo_file_url: string | null;
+  enroll_type: number | null;
 }
 
 interface CourseListProps {

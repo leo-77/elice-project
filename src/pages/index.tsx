@@ -61,6 +61,7 @@ interface Course {
   is_free: boolean;
   image_file_url: string | null;
   logo_file_url: string | null;
+  enroll_type: number | null;
 }
 
 const Home = () => {
