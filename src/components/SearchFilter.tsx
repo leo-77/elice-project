@@ -28,7 +28,7 @@ const FilterTitle = styled.div`
 const FilterText = styled.div`
   line-height: 1.5;
   user-select: auto;
-`
+`;
 
 const FilterButtons = styled.div`
   padding: 9.5px;
@@ -44,13 +44,13 @@ const FilterButton = styled.button<{ isActive: boolean }>`
   padding: 8px 16px;
   border: 1px solid rgb(201, 202, 204);
   border-radius: 16px;
-  background-color: ${({ isActive }) => (isActive ? 'rgb(181, 178, 214)' : 'rgb(248, 249, 250)')}; /* 배경 색상 */
-  color: rgb(0, 0, 0); /* Gray1 */
+  background-color: ${({ isActive }) => (isActive ? 'rgb(82, 79, 161)' : 'rgb(248, 249, 250)')}; /* 배경 색상 */
+  color: ${({ isActive }) => (isActive ? 'white' : 'rgb(0, 0, 0)')}; /* 텍스트 색상 */
   font-size: 12px;
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ isActive }) => (isActive ? 'rgb(180, 170, 210)' : 'rgb(240, 240, 250)')};
+    background-color: ${({ isActive }) => (isActive ? 'rgb(82, 79, 161)' : 'rgb(235, 235, 235)')}; /* 호버 색상 */
   }
 `;
 
@@ -119,7 +119,11 @@ const filters = [
   },
 ];
 
-const SearchFilter = () => {
+interface SearchFilterProps {
+  onFilterChange: (filterConditions: any) => void;
+}
+
+const SearchFilter: React.FC<SearchFilterProps> = ({ onFilterChange }) => {
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set());
 
   const handleFilterClick = (value: string) => {
@@ -130,6 +134,23 @@ const SearchFilter = () => {
       } else {
         newSelectedFilters.add(value);
       }
+
+      const priceConditions = Array.from(newSelectedFilters).map((filter) => {
+        if (filter === '무료') return { "enroll_type": 0, "is_free": true };
+        if (filter === '유료') return { "enroll_type": 0, "is_free": false };
+        return {};
+      });
+
+      const filterConditions = {
+        "$and": [
+          { "title": "%%" },
+          { "$or": [{ "status": 2 }, { "status": 3 }, { "status": 4 }] },
+          { "$or": priceConditions.length > 0 ? priceConditions : [{}] },
+          { "is_datetime_enrollable": true }
+        ]
+      };
+
+      onFilterChange(filterConditions);
       return newSelectedFilters;
     });
   };
@@ -139,9 +160,7 @@ const SearchFilter = () => {
       {filters.map((filter, index) => (
         <FilterSection key={index} isLast={index === filters.length - 1}>
           <FilterTitle>
-            <FilterText>
-              {filter.title}
-            </FilterText>
+            <FilterText>{filter.title}</FilterText>
           </FilterTitle>
           <FilterButtons>
             {filter.options.map(({ name, value }, idx) => (
